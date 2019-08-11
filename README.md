@@ -1,81 +1,117 @@
-# DotNettyRPC
-## 1.简介
-DotNettyRPC是一个基于DotNetty的跨平台RPC框架，支持.NET45以及.NET Standard2.0
-## 2.产生背景
-传统.NET开发中遇到远程调用服务时，多以WCF为主。而WCF虽然功能强大，但是其配置复杂，不易于上手。而且未来必定是.NET Core的天下,WCF暂不支持.NET Core（只有客户端，无法建立服务端）。市面上的其他.NET的 RPC框架诸如gRPC、surging甚至微服务框架Orleans等，这些框架功能强大，性能也很好，并且比较成熟，但是使用起来不够简单。基于上述比较（无任何吹捧贬低的意思），鄙人不才撸了一个轮子DotNettyRPC，它的定位是一个跨平台(.NET45和.NET Standard)、简单却实用的RPC框架
+# 目录
+- [简介](#简介)
+- [产生背景](#产生背景)
+- [使用方式](#使用方式)
+	- [TcpSocket](#TcpSocket)
+	- [WebSocket](#WebSocket)
+	- [UdpSocket](#UdpSocket)
+- [结尾](#结尾)
 
-## 3.使用方法
-### 3.1引入DotNettyRPC
-打开Nuget包管理器，搜索DotNettyRPC即可找到并使用
+# 简介
+DotNettySocket是一个.NET跨平台Socket框架（支持.NET4.5+及.NET Standard2.0+），同时支持TcpSocket、WebSocket和UdpSocket，其基于微软强大的DotNetty框架，力求为Socket通讯提供**简单**、**高效**、**优雅**的操作方式。
 
-或输入Nuget命令：Install-Package DotNettyRPC
-### 3.2定义服务接口
-``` csharp
+安装方式：Nuget安装**DotNettySocket**即可
+项目地址：https://github.com/Coldairarrow/DotNettySocket
 
-    public interface IHello
-    {
-        string SayHello(string msg);
-    }
-	
-    public class Hello : IHello
-    {
-        public string SayHello(string msg)
-        {
-            return msg;
-        }
-    }
-```
-### 3.3服务端
+# 产生背景
+两年前最开始接触物联网的时候，需要用到Tcp及Udp通讯，为了方便使用，将原始的Socket进行了简单的封装，基本满足了需求，并将框架开源。但是由于精力及实力有限，没有进一步优化原框架。后来发现了强大的DotNetty框架，DotNetty是微软Azure团队开源基于Java Netty框架的移植版，其性能优异、维护团队强大，许多.NET强大的框架都使用它。DotNetty功能强大，但是用起来还是不够简洁（或许是个人感觉），刚好最近项目需要用到WebSocket，因此鄙人抽时间基于DotNetty进行简单封装了下，撸出一个力求**简单、高效、优雅**的Socket框架。
+
+# 使用方式
+
+## TcpSocket
+
+- 服务端
 ``` c#
-using Coldairarrow.DotNettyRPC;
-using Common;
+using Coldairarrow.DotNettySocket;
 using System;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Server
+namespace TcpSocket.Server
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            RPCServer rPCServer = new RPCServer(9999);
-            rPCServer.RegisterService<IHello, Hello>();
-            rPCServer.Start();
+            var theServer = await SocketBuilderFactory.GetTcpSocketServerBuilder(6001)
+                .SetLengthFieldEncoder(2)
+                .SetLengthFieldDecoder(ushort.MaxValue, 0, 2, 0, 2)
+                .OnConnectionClose((server, connection) =>
+                {
+                    Console.WriteLine($"连接关闭,连接名[{connection.ConnectionName}],当前连接数:{server.GetConnectionCount()}");
+                })
+                .OnException(ex =>
+                {
+                    Console.WriteLine($"服务端异常:{ex.Message}");
+                })
+                .OnNewConnection((server, connection) =>
+                {
+                    connection.ConnectionName = $"名字{connection.ConnectionId}";
+                    Console.WriteLine($"新的连接:{connection.ConnectionName},当前连接数:{server.GetConnectionCount()}");
+                })
+                .OnRecieve((server, connection, bytes) =>
+                {
+                    Console.WriteLine($"服务端:数据{Encoding.UTF8.GetString(bytes)}");
+                    connection.Send(bytes);
+                })
+                .OnSend((server, connection, bytes) =>
+                {
+                    Console.WriteLine($"向连接名[{connection.ConnectionName}]发送数据:{Encoding.UTF8.GetString(bytes)}");
+                })
+                .OnServerStarted(server =>
+                {
+                    Console.WriteLine($"服务启动");
+                }).BuildAsync();
 
             Console.ReadLine();
         }
     }
 }
-
 ```
-### 3.4客户端
+- 客户端
 ``` c#
-using Coldairarrow.DotNettyRPC;
-using Common;
+using Coldairarrow.DotNettySocket;
 using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Client
+namespace UdpSocket.Client
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            IHello client = RPCClientFactory.GetClient<IHello>("127.0.0.1", 9999);
-            var msg = client.SayHello("Hello");
-            Console.WriteLine(msg);
-            Console.ReadLine();
+            var theClient = await SocketBuilderFactory.GetUdpSocketBuilder()
+                .OnClose(server =>
+                {
+                    Console.WriteLine($"客户端关闭");
+                })
+                .OnException(ex =>
+                {
+                    Console.WriteLine($"客户端异常:{ex.Message}");
+                })
+                .OnRecieve((server, point, bytes) =>
+                {
+                    Console.WriteLine($"客户端:收到来自[{point.ToString()}]数据:{Encoding.UTF8.GetString(bytes)}");
+                })
+                .OnSend((server, point, bytes) =>
+                {
+                    Console.WriteLine($"客户端发送数据:目标[{point.ToString()}]数据:{Encoding.UTF8.GetString(bytes)}");
+                })
+                .OnStarted(server =>
+                {
+                    Console.WriteLine($"客户端启动");
+                }).BuildAsync();
+
+            while (true)
+            {
+                await theClient.Send(Guid.NewGuid().ToString(), new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6003));
+                await Task.Delay(1000);
+            }
         }
     }
 }
 
 ```
-### 3.5运行
-先运行服务端,再运行客户端,即可在客户端输出Hello
-
-## 4.结语
-本机测试一次RPC请求平均0.4ms左右，性能不高，但是足以应对绝大多数业务场景，重在简单实用。可以优化的地方很多，还望大家多多支持。
-
-GitHub地址：https://github.com/Coldairarrow/DotNettyRPC
-
-QQ群：373144077
-
-
+## 
