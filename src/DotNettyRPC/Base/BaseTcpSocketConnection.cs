@@ -53,7 +53,6 @@ namespace Coldairarrow.DotNettySocket
         public void Close()
         {
             _channel.CloseAsync();
-            _server.RemoveConnection(this as TConnection);
         }
 
         #endregion

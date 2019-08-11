@@ -72,6 +72,7 @@ namespace Coldairarrow.DotNettySocket
             PackException(() =>
             {
                 var theConnection = GetConnection(clientChannel);
+                RemoveConnection(theConnection);
                 _eventHandle.OnConnectionClose(this as TSocketServer, theConnection);
             });
         }
@@ -122,7 +123,6 @@ namespace Coldairarrow.DotNettySocket
 
         public void CloseConnection(TConnection theConnection)
         {
-            RemoveConnection(theConnection);
             theConnection.Close();
         }
 

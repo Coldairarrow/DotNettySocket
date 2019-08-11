@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Description>A RPC Framework Based On DotNetty</Description>
+    <Description>An Easy Socket(TcpSocket,WebSocket,UdpSocket) Framework Based On DotNetty</Description>
     <Authors>Coldairarrow</Authors>
     <Company>Coldairarrow</Company>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Copyright>Open Source</Copyright>
-    <PackageProjectUrl>https://github.com/Coldairarrow/DotNettyRPC</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/Coldairarrow/DotNettySocket</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Coldairarrow/DotNettyRPC</RepositoryUrl>
     <PackageReleaseNotes />
     <Version>1.0.0</Version>

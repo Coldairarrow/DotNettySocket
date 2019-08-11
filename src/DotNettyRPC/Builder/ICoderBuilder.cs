@@ -1,5 +1,9 @@
 ﻿namespace Coldairarrow.DotNettySocket
 {
+    /// <summary>
+    /// 包含编码器和解码器的构建者
+    /// </summary>
+    /// <typeparam name="TBuilder">特定构建着</typeparam>
     public interface ICoderBuilder<TBuilder>
     {
         /// <summary>

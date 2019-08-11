@@ -2,7 +2,7 @@
 
 namespace Coldairarrow.DotNettySocket
 {
-    public class TcpSocketCientEvent<TSocketClient, TData>
+    class TcpSocketCientEvent<TSocketClient, TData>
     {
         public Action<TSocketClient> OnClientStarted { get; set; }
         public Action<TSocketClient, TData> OnRecieve { get; set; }
