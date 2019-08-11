@@ -5,15 +5,17 @@
     <Description>An Easy Socket(TcpSocket,WebSocket,UdpSocket) Framework Based On DotNetty</Description>
     <Authors>Coldairarrow</Authors>
     <Company>Coldairarrow</Company>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Copyright>Open Source</Copyright>
     <PackageProjectUrl>https://github.com/Coldairarrow/DotNettySocket</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/Coldairarrow/DotNettyRPC</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Coldairarrow/DotNettySocket</RepositoryUrl>
     <PackageReleaseNotes />
     <Version>1.0.0</Version>
     <AssemblyName>Coldairarrow.DotNettySocket</AssemblyName>
     <RootNamespace>Coldairarrow.DotNettySocket</RootNamespace>
+    <PackageId>DotNettySocket</PackageId>
+    <Product>DotNettySocket</Product>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
