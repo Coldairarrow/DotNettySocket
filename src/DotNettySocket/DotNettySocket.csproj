@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/Coldairarrow/DotNettySocket</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Coldairarrow/DotNettySocket</RepositoryUrl>
     <PackageReleaseNotes />
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <AssemblyName>Coldairarrow.DotNettySocket</AssemblyName>
     <RootNamespace>Coldairarrow.DotNettySocket</RootNamespace>
     <PackageId>DotNettySocket</PackageId>
@@ -28,8 +28,6 @@
     <PackageReference Include="DotNetty.Codecs.Http" Version="0.6.0" />
     <PackageReference Include="DotNetty.Common" Version="0.6.0" />
     <PackageReference Include="DotNetty.Transport" Version="0.6.0" />
-    <PackageReference Include="ImpromptuInterface" Version="7.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
   </ItemGroup>
 
 </Project>
