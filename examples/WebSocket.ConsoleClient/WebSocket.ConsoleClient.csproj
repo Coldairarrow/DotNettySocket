@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B34B7213-5663-4268-9BBD-765DCFC4F79D}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>WebSocket.Client</RootNamespace>
-    <AssemblyName>WebSocket.Client</AssemblyName>
+    <RootNamespace>WebSocket.ConsoleClient</RootNamespace>
+    <AssemblyName>WebSocket.ConsoleClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -30,6 +30,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

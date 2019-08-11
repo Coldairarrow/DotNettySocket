@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace WebSocket.Client
+namespace WebSocket.ConsoleClient
 {
     class Program
     {
