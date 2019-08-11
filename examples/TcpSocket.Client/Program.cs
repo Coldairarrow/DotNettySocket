@@ -40,8 +40,6 @@ namespace TcpSocket.Client
 
                 await Task.Delay(1000);
             }
-
-            Console.ReadLine();
         }
     }
 }

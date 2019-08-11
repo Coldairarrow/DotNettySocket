@@ -49,8 +49,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\DotNettyRPC\DotNettySocket.csproj">
-      <Project>{20203900-CE4A-4B88-A006-82DF4F9D9A12}</Project>
+    <ProjectReference Include="..\..\src\DotNettySocket\DotNettySocket.csproj">
+      <Project>{AFDB6665-F3CD-48D6-9863-4AAFA5FB97ED}</Project>
       <Name>DotNettySocket</Name>
     </ProjectReference>
   </ItemGroup>

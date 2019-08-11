@@ -37,8 +37,6 @@ namespace WebSocket.Client
 
                 await Task.Delay(1000);
             }
-
-            Console.ReadLine();
         }
     }
 }
