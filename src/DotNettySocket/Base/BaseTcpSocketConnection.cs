@@ -1,5 +1,6 @@
 ﻿using DotNetty.Transport.Channels;
 using System;
+using System.Net;
 
 namespace Coldairarrow.DotNettySocket
 {
@@ -49,6 +50,8 @@ namespace Coldairarrow.DotNettySocket
                 _connectionName = newName;
             }
         }
+
+        public IPEndPoint ClientAddress => _channel.RemoteAddress as IPEndPoint;
 
         public void Close()
         {

@@ -1,4 +1,6 @@
-﻿namespace Coldairarrow.DotNettySocket
+﻿using System.Net;
+
+namespace Coldairarrow.DotNettySocket
 {
     /// <summary>
     /// SocketConnection基接口
@@ -21,5 +23,13 @@
         /// The name of the connection.
         /// </value>
         string ConnectionName { get; set; }
+
+        /// <summary>
+        /// 客户端地址
+        /// </summary>
+        /// <value>
+        /// The client address.
+        /// </value>
+        IPEndPoint ClientAddress { get; }
     }
 }

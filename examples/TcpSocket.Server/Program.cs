@@ -1,5 +1,6 @@
 ﻿using Coldairarrow.DotNettySocket;
 using System;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace TcpSocket.Server
                 .OnNewConnection((server, connection) =>
                 {
                     connection.ConnectionName = $"名字{connection.ConnectionId}";
-                    Console.WriteLine($"新的连接:{connection.ConnectionName},当前连接数:{server.GetConnectionCount()}");
+                    Console.WriteLine($"新的连接[{connection.ClientAddress.Address.MapToIPv4().ToString()}]:{connection.ConnectionName},当前连接数:{server.GetConnectionCount()}");
                 })
                 .OnRecieve((server, connection, bytes) =>
                 {

@@ -60,12 +60,19 @@ namespace Coldairarrow.DotNettySocket
 
         public async Task Send(byte[] bytes, EndPoint point)
         {
-            IByteBuffer buffer = Unpooled.WrappedBuffer(bytes);
-            await _channel.WriteAndFlushAsync(new DatagramPacket(buffer, point));
-            await Task.Run(() =>
+            try
             {
-                _event.OnSend?.Invoke(this, point, bytes);
-            });
+                IByteBuffer buffer = Unpooled.WrappedBuffer(bytes);
+                await _channel.WriteAndFlushAsync(new DatagramPacket(buffer, point));
+                await Task.Run(() =>
+                {
+                    _event.OnSend?.Invoke(this, point, bytes);
+                });
+            }
+            catch (Exception ex)
+            {
+                _event.OnException.Invoke(ex);
+            }
         }
 
         public async Task Send(string msgStr, EndPoint point)

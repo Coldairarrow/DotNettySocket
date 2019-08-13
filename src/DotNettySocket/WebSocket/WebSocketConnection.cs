@@ -1,5 +1,6 @@
 ﻿using DotNetty.Codecs.Http.WebSockets;
 using DotNetty.Transport.Channels;
+using System;
 using System.Threading.Tasks;
 
 namespace Coldairarrow.DotNettySocket
@@ -24,11 +25,18 @@ namespace Coldairarrow.DotNettySocket
 
         public async Task Send(string msgStr)
         {
-            await _channel.WriteAndFlushAsync(new TextWebSocketFrame(msgStr));
-            await Task.Run(() =>
+            try
             {
-                _serverEvent.OnSend?.Invoke(_server, this, msgStr);
-            });
+                await _channel.WriteAndFlushAsync(new TextWebSocketFrame(msgStr));
+                await Task.Run(() =>
+                {
+                    _serverEvent.OnSend?.Invoke(_server, this, msgStr);
+                });
+            }
+            catch (Exception ex)
+            {
+                _serverEvent.OnException?.Invoke(ex);
+            }
         }
 
         #endregion

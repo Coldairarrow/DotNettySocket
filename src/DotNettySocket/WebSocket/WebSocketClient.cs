@@ -79,12 +79,19 @@ namespace Coldairarrow.DotNettySocket
 
         public async Task Send(string msgStr)
         {
-            if (!handshaker.IsHandshakeComplete)
+            try
             {
-                _handshakerSp.WaitOne();
+                if (!handshaker.IsHandshakeComplete)
+                {
+                    _handshakerSp.WaitOne();
+                }
+                await _channel.WriteAndFlushAsync(new TextWebSocketFrame(msgStr));
+                _clientEvent?.OnSend(this, msgStr);
             }
-            await _channel.WriteAndFlushAsync(new TextWebSocketFrame(msgStr));
-            _clientEvent?.OnSend(this, msgStr);
+            catch (Exception ex)
+            {
+                _clientEvent.OnException?.Invoke(ex);
+            }
         }
     }
 }

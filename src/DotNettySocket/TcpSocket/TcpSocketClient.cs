@@ -1,5 +1,6 @@
 ﻿using DotNetty.Buffers;
 using DotNetty.Transport.Channels;
+using System;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,11 +24,18 @@ namespace Coldairarrow.DotNettySocket
 
         public async Task Send(byte[] bytes)
         {
-            await _channel.WriteAndFlushAsync(Unpooled.WrappedBuffer(bytes));
-            await Task.Run(() =>
+            try
             {
-                _clientEvent.OnSend?.Invoke(this, bytes);
-            });
+                await _channel.WriteAndFlushAsync(Unpooled.WrappedBuffer(bytes));
+                await Task.Run(() =>
+                {
+                    _clientEvent.OnSend?.Invoke(this, bytes);
+                });
+            }
+            catch (Exception ex)
+            {
+                _clientEvent.OnException?.Invoke(ex);
+            }
         }
 
         public async Task Send(string msgStr)
