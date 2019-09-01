@@ -11,7 +11,7 @@
     <PackageProjectUrl>https://github.com/Coldairarrow/DotNettySocket</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Coldairarrow/DotNettySocket</RepositoryUrl>
     <PackageReleaseNotes />
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <AssemblyName>DotNettySocket</AssemblyName>
     <RootNamespace>Coldairarrow.DotNettySocket</RootNamespace>
     <PackageId>DotNettySocket</PackageId>
